@@ -45,7 +45,7 @@ body <- dashboardBody(
     tabItem(tabName = "ML",
             fluidPage(
               titlePanel("TalkingData AdTracking Fraud Detection"),
-              p("Darbe bus pateikiamos prognozes naudojant labai nedideli duomenu kieki, keiciant klasifikatoriu parametrus."),
+              p("Darbe bus pateikiamos klasifikatoriu prognozes keiciant klasifikatoriu ju parametrus."),
               p("Visa programini koda galima rasti https://github.com/donkratas/Rshiny,
                 taip pat, neur.R faila, kuriame pateiktas ir neuroniniu tinklu klasifikatorius."),
               p("Cia pateikiamas tik aplikacijos prototipas."),
