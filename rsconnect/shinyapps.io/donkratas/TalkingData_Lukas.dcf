@@ -5,9 +5,9 @@ account: donkratas
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1247746
-bundleId: 2447110
+bundleId: 2485184
 url: https://donkratas.shinyapps.io/TalkingData_Lukas/
-when: 1569502294.11266
+when: 1570651644.25782
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: neur.R

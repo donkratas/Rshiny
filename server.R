@@ -8,6 +8,7 @@ library(plotly)
 library(car)
 library(factoextra)
 library(rattle)
+library(randomForest)
 
 
 # Help funkctions ----
