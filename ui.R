@@ -12,7 +12,7 @@ library(shinydashboard)
 library(plotly)
 library(shinycssloaders) 
 
-header <- dashboardHeader(title = "Klasifikavimo algoritmai",titleWidth = 250)
+header <- dashboardHeader(title = "Klasifikavimo algoritmai", titleWidth = 250)
 
 sidebar <- dashboardSidebar(
   
@@ -68,14 +68,12 @@ body <- dashboardBody(
                              tabPanel(h5("Prognozavimas"),
                                       fluidRow(
                                         box(
-                                          title = "Sprendimu medzio klasifikatoriaus parametrai",
+                                          title = "Kuriamo sprendimo medzio parametrai",
                                           # background = "light-blue",
                                           status = "success",
                                           solidHeader = TRUE,
                                           width = 3,
                                           collapsible = TRUE,
-                                          uiOutput("classvar"),
-                                          tags$hr(),
                                           uiOutput("depth"),
                                           uiOutput("split"),
                                           uiOutput("number_of_folds_dt"),
@@ -142,15 +140,14 @@ body <- dashboardBody(
                              tabPanel(h5("Prognozavimas"),
                                       fluidRow(
                                         box(
-                                          title = "Atsitiktinio misko klasifikatoriaus parametrai",
+                                          title = "Kuriamo atsitiktinio misko parametrai",
                                           # background = "light-blue",
                                           status = "success",
                                           solidHeader = TRUE,
                                           width = 3,
                                           collapsible = TRUE,
-                                          uiOutput("classvara"),
-                                          tags$hr(),
                                           uiOutput("ntree"),
+                                          uiOutput("mtry"),
                                           # uiOutput("tuneLength"),
                                           uiOutput("number_of_folds"),
                                           uiOutput("cv_repeats"),
@@ -172,18 +169,18 @@ body <- dashboardBody(
                                           verbatimTextOutput("AUC_rf"),
                                           tags$head(tags$style("#AUC_rf{color:black; font-size:16px; font-style:initial; 
                                                                max-height: 500px; max-width: 500px; background: ghostwhite;}"))
-                                          ),
-                                        fluidRow(
-                                          box(
-                                            title = "Rezultatai ant mokymosi duomenu",
-                                            # background = "navy",
-                                            status = "primary",
-                                            solidHeader = TRUE,
-                                            width = 12,
-                                            collapsible = TRUE,
-                                            withSpinner(plotOutput("plot_rf",height="500px"))
                                           )
-                                        )
+                                        # fluidRow(
+                                        #   box(
+                                        #     title = "Rezultatai ant mokymosi duomenu",
+                                        #     # background = "navy",
+                                        #     status = "primary",
+                                        #     solidHeader = TRUE,
+                                        #     width = 12,
+                                        #     collapsible = TRUE
+                                        #     # withSpinner(plotOutput("plot_rf",height="500px"))
+                                        #   )
+                                        # )
                                           )),
                              tabPanel(h5("Prognozuoti duomenys"),
                                       DT::dataTableOutput(outputId="table21"))
@@ -209,13 +206,12 @@ body <- dashboardBody(
                              tabPanel(h5("Prognozavimas"),
                                       fluidRow(
                                         box(
-                                          title = "k-Artimiausiu kaimynu klasifikatoriaus parametrai",
+                                          title = "Kuriamo k-artimiausiu kaimynu klasifikatoriaus parametrai",
                                           # background = "light-blue",
                                           status = "success",
                                           solidHeader = TRUE,
                                           width = 3,
                                           collapsible = TRUE,
-                                          tags$hr(),
                                           uiOutput("k_number"),
                                           uiOutput("number_of_folds_knn"),
                                           uiOutput("cv_repeats_knn"),
@@ -284,10 +280,10 @@ body <- dashboardBody(
                                           solidHeader = TRUE,
                                           width = 3,
                                           collapsible = TRUE,
-                                          tags$hr(),
+                                          uiOutput("sigma1"),
+                                          uiOutput("C"),
                                           uiOutput("number_of_folds_svm"),
                                           uiOutput("cv_repeats_svm"),
-                                          uiOutput("sigma1"),
                                           tags$hr(),
                                           actionButton("action_svm", "Sukurti/atnaujinti modeli")
                                         ),
@@ -345,7 +341,6 @@ body <- dashboardBody(
                                           solidHeader = TRUE,
                                           width = 3,
                                           collapsible = TRUE,
-                                          tags$hr(),
                                           uiOutput("number_of_folds_log"),
                                           uiOutput("cv_repeats_log"),
                                           tags$hr(),

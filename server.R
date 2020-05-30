@@ -30,23 +30,23 @@ shinyServer(function(input, output) {
   })
   
   output$depth <- renderUI({
-    sliderInput("depth","Pasirinkite didziausia medzio gyli:",10,
+    sliderInput("depth","Pasirinkite medzio gyli:",10,
                 min = 1, max = 30, width='400px')
   })
   
   output$split <- renderUI({
-    sliderInput("split","Pasirinkite isskirciu kieki", 10,
-                min = 0, max = 50, step=10, width='400px')
+    sliderInput("split","Pasirinkite padalijimu skaiciu", 1,
+                min = 1, max = 50, step=1, width='400px')
   })
   
   output$number_of_folds_dt <- renderUI({
-    sliderInput("number_of_folds_dt","Pasirinkite i kiek daliu skaldyti duomenis:",2,
-                min = 2, max = 10, width='400px')
+    sliderInput("number_of_folds_dt","Pasirinkite kryzmines validacijos daliu skaiciu",5,
+                min = 5, max = 10, width='400px')
   })
   
   output$cv_repeats_dt <- renderUI({
-    sliderInput("cv_repeats_dt","Pasirinkite pakartojimu skaiciu:",1,
-                min = 1, max = 5, width='400px')
+    sliderInput("cv_repeats_dt","Pasirinkite kryzmines validacijos pakartojimu skaiciu",1,
+                min = 1, max = 3, width='400px')
   })
   
   # Build the decision tree 
@@ -119,13 +119,13 @@ shinyServer(function(input, output) {
   })
   
   output$number_of_folds <- renderUI({
-    sliderInput("number_of_folds","Pasirinkite i kiek daliu skaldyti duomenis:",2,
-                min = 2, max = 10, width='400px')
+    sliderInput("number_of_folds","Pasirinkite į kiek daliu dalinti duomenu aibe kryzminei validacijai",5,
+                min = 5, max = 10, width='400px')
   })
   
   output$cv_repeats <- renderUI({
-    sliderInput("cv_repeats","Pasirinkite pakartojimu skaiciu:",1,
-                min = 1, max = 5, width='400px')
+    sliderInput("cv_repeats","Pasirinkite kryzmines validacijos pakartojimu skaiciu",1,
+                min = 1, max = 3, width='400px')
   })
   
   # output$tuneLength <- renderUI({
@@ -134,7 +134,11 @@ shinyServer(function(input, output) {
   # })
   output$ntree <- renderUI({
     sliderInput("ntree","Pasirinkite medziu kieki:",10,
-                min = 10, max = 300,step=10, width='400px')
+                min = 10, max = 2000,step=50, width='400px')
+  })
+  output$mtry <- renderUI({
+    sliderInput("mtry","Pasirinkite kintamuju skaiciu padalijimams rasti kieki:",2,
+                min = 2, max = 6,step=2, width='400px')
   })
   
   observeEvent(input$action_rf, {
@@ -144,10 +148,10 @@ shinyServer(function(input, output) {
                              data = train_msc,
                              method = 'rf',
                              ntree = input$ntree,
-                             tuneLength = 15,
                              trControl = trainControl(method = "repeatedcv",
                                                       number = input$number_of_folds,
-                                                      repeats = input$cv_repeats)
+                                                      repeats = input$cv_repeats),
+                             tuneGrid = expand.grid(mtry = input$mtry)
     )
     
     my_prediction_rf <- predict(rf_model, newdata = test_msc)
@@ -204,17 +208,17 @@ shinyServer(function(input, output) {
   })
   
   output$number_of_folds_knn <- renderUI({
-    sliderInput("number_of_folds_knn","Pasirinkite i kiek daliu skaldyti duomenis:",1,
-                min = 2, max = 5, width='400px')
+    sliderInput("number_of_folds_knn","Pasirinkite į kiek daliu dalinti duomenu aibe kryzminei validacijai",5,
+                min = 5, max = 10, width='400px')
   })
   
   output$cv_repeats_knn <- renderUI({
-    sliderInput("cv_repeats_knn","Pasirinkite pakartojimu skaiciu:",1,
-                min = 1, max = 5, width='400px')
+    sliderInput("cv_repeats_knn","Pasirinkite kryzmines validacijos pakartojimu skaiciu",1,
+                min = 1, max = 3, width='400px')
   })
   
   output$k_number <- renderUI({
-    sliderInput("k_number","Pasirinkite k's:",1, 40, c(1, 7), width='400px')
+    sliderInput("k_number","Pasirinkite kaimynu skaiciu:",1, 40, c(1, 7), width='400px')
   })
   
   observeEvent(input$action_knn, {
@@ -282,18 +286,23 @@ shinyServer(function(input, output) {
   
   
   output$sigma1 <- renderUI({
-    selectInput("sigma1","Sigma:", c("Pasirinkite sigma" = "", c(0,0.01, 0.02, 0.025, 0.03, 0.04,
+    selectInput("sigma1","Pasirinkite Sigma:", c("Pasirinkite sigma" = "", c(0,0.01, 0.02, 0.025, 0.03, 0.04,
                                                                  0.05, 0.06, 0.07,0.08, 0.09, 0.1, 0.25, 0.5, 0.75,0.9,5)), selected = 0.01)
   })
   
+  output$C <- renderUI({
+    selectInput("C","Pasirinkite baudos parametra C:", c("Pasirinkite baudos parametra C" = "", c(0.01, 0.05, 0.1, 0.25, 0.5, 0.75,
+                                                                     1, 1.5, 2,5,10)), selected = 0.01)
+  })
+  
   output$number_of_folds_svm <- renderUI({
-    sliderInput("number_of_folds_svm","Pasirinkite i kiek daliu skaldyti duomenis:",1,
-                min = 2, max = 5, width='400px')
+    sliderInput("number_of_folds_svm","Pasirinkite į kiek daliu dalinti duomenu aibe kryzminei validacijai",5,
+                min = 5, max = 10, width='400px')
   })
   
   output$cv_repeats_svm <- renderUI({
-    sliderInput("cv_repeats_svm","Pasirinkite pakartojimu skaiciu:",1,
-                min = 1, max = 5, width='400px')
+    sliderInput("cv_repeats_svm","Pasirinkite kryzmines validacijos pakartojimu skaiciu",1,
+                min = 1, max = 3, width='400px')
   })
   
   output$test <- renderText({
@@ -370,13 +379,13 @@ shinyServer(function(input, output) {
   })
   
   output$number_of_folds_log <- renderUI({
-    sliderInput("number_of_folds_log","Pasirinkite i kiek daliu skaldyti duomenis:",1,
-                min = 2, max = 5, width='400px')
+    sliderInput("number_of_folds_log","Pasirinkite į kiek daliu dalinti duomenu aibe kryzminei validacijai",5,
+                min = 5, max = 10, width='400px')
   })
   
   output$cv_repeats_log <- renderUI({
-    sliderInput("cv_repeats_log","Pasirinkite pakartojimu skaiciu:",1,
-                min = 1, max = 5, width='400px')
+    sliderInput("cv_repeats_log","Pasirinkite kryzmines validacijos pakartojimu skaiciu",1,
+                min = 1, max = 3, width='400px')
   })
   
   observeEvent(input$action_log, {
